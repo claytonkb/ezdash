@@ -22,15 +22,6 @@ else{
     if($ARGV[0] eq "clean"){
         clean();
     }
-    elsif($ARGV[0] eq "clean_all"){
-        clean_all();
-    }
-    elsif($ARGV[0] eq "lib_babel"){
-        lib_babel();
-    }
-    elsif($ARGV[0] eq "all_libs"){
-        all_libs();
-    }
     elsif($ARGV[0] eq "libs"){
         libs();
     }
@@ -45,39 +36,13 @@ sub make_all{
     build();
 }
 
-sub all_libs{
-    print "all_libs\n" if $verbose;
-    `mkdir -p lib`;
-    lib_babel();
-    sat_tools();
-    libs();
-}
-
-sub lib_babel{
-    print "lib_babel\n" if $verbose;
-    chdir "lib_babel";
-    `perl make.pl libs`;
-    chdir "../";
-    `cp lib_babel/lib/libbabel.a lib`;
-}
-
-sub sat_tools{
-    print "sat_tools\n" if $verbose;
-    `mkdir -p sat_tools/lib`;
-    `cp lib/libbabel.a sat_tools/lib`;
-    chdir "sat_tools";
-    `perl make.pl libs`;
-    chdir "../";
-    `cp sat_tools/lib/libsat_tools.a lib`;
-}
-
 sub libs{
     return; # do nothing
     print "libs\n" if $verbose;
     `mkdir -p lib`;
     chdir "src";
-    `gcc -O3 -c *.c -I../lib_babel/src -I../sat_tools/src -Wfatal-errors -lm` if $optimize;
-    `gcc -c *.c -I../lib_babel/src -I../sat_tools/src -Wfatal-errors -lm` unless $optimize;
+    `gcc -O3 -c *.c -Wfatal-errors -lncurses -lm` if $optimize;
+    `gcc -c *.c -Wfatal-errors -lncurses -lm` unless $optimize;
     `ar rcs libzeppelin.a *.o`;
     `mv *.o ../lib`;
     `mv *.a ../lib`;
@@ -92,22 +57,12 @@ sub build{
     for(@libs){ chomp $_; $lib_string .= "lib/$_ " };
     my $build_string;
     $build_string =
-        "gcc -O3 test/main.c $lib_string -Llib -lbabel -lsat_tools -Isrc -Ilib_babel/src -Isat_tools/src -o bin/test -lm"
+        "gcc -O3 test/main.c $lib_string -Llib -Isrc -o bin/test -lncurses -lm"
         if $optimize;
     $build_string =
         "gcc test/main.c $lib_string -Llib -lbabel -lsat_tools -Isrc -Ilib_babel/src -Isat_tools/src -o bin/test -lm"
         unless $optimize;
     `$build_string`;
-}
-
-sub clean_all{
-    print "clean_all\n" if $verbose;
-    chdir "lib_babel";
-    `perl make.pl clean`;
-    chdir "../sat_tools";
-    `perl make.pl clean`;
-    chdir "../";
-    clean();
 }
 
 sub clean{

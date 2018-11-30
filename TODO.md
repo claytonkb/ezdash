@@ -39,3 +39,8 @@ ez-cli
         NOTE: Hopefully, we have some pthreads/signals stuff working to give
         the TUI a nice look-and-feel.
 
+        NOTE: command-line input string
+            Choose some max safe length and provide this to the input routine;
+            just drop any additional input until <CR> is pressed
+            
+
