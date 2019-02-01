@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "ezdash.h"
+
 void dev_prompt(void);
 void dev_get_line(char *buffer, FILE *stream);
 void dev_menu(void);
@@ -60,7 +62,7 @@ void dev_prompt(void){
                 break;
 
             case 1:
-                _say("nothing here...");
+                ezdash_init();
                 break;
 
             case 2:

@@ -12,8 +12,8 @@
 #
 #   Clean:
 #       perl make.pl clean
-#$verbose=1;
-$optimize=1;
+$verbose=1;
+#$optimize=1;
 
 unless ($#ARGV > -1) {
     make_all();
@@ -32,18 +32,17 @@ else{
 
 sub make_all{
     print "make_all\n" if $verbose;
-    all_libs();
+    libs();
     build();
 }
 
 sub libs{
-    return; # do nothing
     print "libs\n" if $verbose;
     `mkdir -p lib`;
     chdir "src";
     `gcc -O3 -c *.c -Wfatal-errors -lncurses -lm` if $optimize;
     `gcc -c *.c -Wfatal-errors -lncurses -lm` unless $optimize;
-    `ar rcs libzeppelin.a *.o`;
+    `ar rcs libezdash.a *.o`;
     `mv *.o ../lib`;
     `mv *.a ../lib`;
     chdir "../";
@@ -57,10 +56,10 @@ sub build{
     for(@libs){ chomp $_; $lib_string .= "lib/$_ " };
     my $build_string;
     $build_string =
-        "gcc -O3 test/main.c $lib_string -Llib -Isrc -o bin/test -lncurses -lm"
+        "gcc -O3 test/main.c $lib_string -Llib -Isrc -o bin/test -lncurses -lm lezdash"
         if $optimize;
     $build_string =
-        "gcc test/main.c $lib_string -Llib -lbabel -lsat_tools -Isrc -Ilib_babel/src -Isat_tools/src -o bin/test -lm"
+        "gcc test/main.c $lib_string -Llib -Isrc -o bin/test -lm -lncurses"
         unless $optimize;
     `$build_string`;
 }
