@@ -75,4 +75,6 @@ ez-dash
                 just drop any additional input until <CR> is pressed
             This CLI is not suitable for long, shell-style commands
             
+        NOTE: scrolling in curses
+            https://www.mkssoftware.com/docs/man3/curs_scroll.3.asp            
 
