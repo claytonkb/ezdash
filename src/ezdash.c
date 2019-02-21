@@ -45,7 +45,7 @@ void ezdash_init(){
     scrollok(wnd, TRUE); // printw() acts like printf now
 
     const char *foo[] = {
-        "foo\n",
+        "foo blah blah blah\n",
         "bartering\n",
     };
 
