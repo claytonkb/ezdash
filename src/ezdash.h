@@ -6,6 +6,8 @@
 #ifndef EZDASH_H
 #define EZDASH_H
 
+#define MAX_DISPLAY_COLS 12 // completely arbitrary... should be based on term_cols
+
 typedef enum ezdash_mode_enum
         { EZ_MODE1, EZ_MODE2, EZ_MODE3, EZ_MODE4, EZ_MODE5 }
         ezdash_mode;
@@ -24,11 +26,11 @@ typedef struct{
     int y_orig;
 
     // These fields used by component A:
-    int display_cols; // number of display columns, e.g. 3
-    int display_col_x_orig[8];
-
     int dash_width;  // = cols / display_cols
     int dash_height; // = rows * display_cols
+
+    int display_cols; // number of display columns, e.g. 3
+    int display_col_x_orig[MAX_DISPLAY_COLS];
 
 } ezdash_component;
 
@@ -36,6 +38,9 @@ typedef struct{
 typedef struct{
 
     WINDOW* wnd;
+
+    int term_rows;
+    int term_cols;
 
     ezdash_mode mode;
 
@@ -66,6 +71,7 @@ typedef struct{
 
 void ezdash_init();
 void ezdash_print_page(ezdash_component comp, int start_row, int num_lines, const char **str_array);
+void ezdash_screen_update(ezdash_component comp, int start_row, int num_lines, const char **str_array);
 
 #endif // EZDASH_H
 

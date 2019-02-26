@@ -1,3 +1,6 @@
+Get multiple windows working on same terminal -- each TUI component should
+have its own associated WINDOW*
+
 https://github.com/tony/NCURSES-Programming-HOWTO-examples  
 http://www.cs.ukzn.ac.za/~hughm/os/notes/ncurses.html  
 http://www.clifford.at/stfl/  
