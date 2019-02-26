@@ -18,6 +18,8 @@ typedef enum ezdash_border_enum
 
 typedef struct{
 
+    WINDOW* wnd;
+
     int enable;
 
     int cols;
@@ -36,8 +38,6 @@ typedef struct{
 
 
 typedef struct{
-
-    WINDOW* wnd;
 
     int term_rows;
     int term_cols;
@@ -72,6 +72,9 @@ typedef struct{
 void ezdash_init();
 void ezdash_print_page(ezdash_component comp, int start_row, int num_lines, const char **str_array);
 void ezdash_screen_update(ezdash_component comp, int start_row, int num_lines, const char **str_array);
+//WINDOW *ezdash_new_win(int height, int width, int starty, int startx);
+WINDOW *ezdash_new_win(WINDOW *wnd, int height, int width, int starty, int startx);
+void ezdash_del_win(WINDOW *wnd);
 
 #endif // EZDASH_H
 
