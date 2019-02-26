@@ -115,7 +115,7 @@ void ezdash_init(ezdash_mode mode, int num_cols){
         "amet", "euismod", "Pellentesque", "porta", "dui", "quis", "elementum",
         "varius", "tellus", "arcu", "sodales", "justo", "nec", "lacinia", "eros", "ex",
         "eget", "tortor", "Fusce", "ultricies", "leo", "sapien", "id", "tempor",
-        "ipsum", "tempus", "ut", 
+        "ipsum", "tempus", "ut"
     };
 
 #define num_cols 3
@@ -124,7 +124,9 @@ void ezdash_init(ezdash_mode mode, int num_cols){
     comp.enable=1;
 
     getmaxyx(wnd,comp.rows,comp.cols);
-    comp.wnd = ezdash_new_win(wnd, comp.rows, comp.cols, 0, 0);
+    comp.rows /= 2;
+    comp.cols /= 2;
+    comp.wnd = ezdash_new_win(wnd, comp.rows, comp.cols, 10, 10);
 
     comp.x_orig=0;
     comp.y_orig=0;
@@ -166,15 +168,12 @@ void ezdash_init(ezdash_mode mode, int num_cols){
 
 //
 //
-WINDOW *ezdash_new_win(WINDOW *wnd, int height, int width, int starty, int startx){
+WINDOW *ezdash_new_win(WINDOW *wnd, int win_rows, int win_cols, int y_orig, int x_orig){
 
     WINDOW *result;
 
-//    wnd = newwin(height, width, starty, startx);
-//    wnd = newwin(0,0,0,0);
-    result = subwin(wnd,0,0,0,0);
-//    box(local_win, 0 , 0);
-//    wrefresh(local_win);
+    //WINDOW *subwin(WINDOW *orig, int nlines, int ncols, int begin_y, int begin_x);
+    result = subwin(wnd,win_rows,win_cols,y_orig,x_orig);
 
     return result;
 
