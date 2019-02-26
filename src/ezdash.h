@@ -6,11 +6,32 @@
 #ifndef EZDASH_H
 #define EZDASH_H
 
-void ezdash_init();
-
 typedef enum ezdash_mode_enum
-        { MODE1, MODE2, MODE3, MODE4, MODE5 }
+        { EZ_MODE1, EZ_MODE2, EZ_MODE3, EZ_MODE4, EZ_MODE5 }
         ezdash_mode;
+
+typedef enum ezdash_border_enum
+        { EZ_BORDER_OFF, EZ_BORDER_ON }
+        ezdash_border;
+
+typedef struct{
+
+    int enable;
+
+    int cols;
+    int rows;
+    int x_orig;
+    int y_orig;
+
+    // These fields used by component A:
+    int display_cols; // number of display columns, e.g. 3
+    int display_col_x_orig[8];
+
+    int dash_width;  // = cols / display_cols
+    int dash_height; // = rows * display_cols
+
+} ezdash_component;
+
 
 typedef struct{
 
@@ -18,20 +39,16 @@ typedef struct{
 
     ezdash_mode mode;
 
-    // component enables
-    int en_component_A;
-    int en_component_B;
-    int en_component_C;
+    ezdash_component A;
+    ezdash_component B;
+    ezdash_component C;
 
     // border enables
-    int en_outer_border;
-    int en_column_borders;
-    int en_A_border;
-    int en_BC_border;
-    int en_AC_border;
-
-    // mode A column count
-    int num_columns;
+    ezdash_border outer_border;
+    ezdash_border column_borders;
+    ezdash_border A_border;
+    ezdash_border BC_border;
+    ezdash_border AC_border;
 
     // split ratios
     float split_A_BC;
@@ -42,11 +59,13 @@ typedef struct{
     int update_period;
 
     // string buffer for CLI input
-    char *cli_input;
+    char cli_input[256];
 
 } ezdash_env;
 
 
+void ezdash_init();
+void ezdash_print_page(ezdash_component comp, int start_row, int num_lines, const char **str_array);
 
 #endif // EZDASH_H
 

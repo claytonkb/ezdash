@@ -9,19 +9,23 @@ int r,c;  // current row and column (upper-left is (0,0))
 
 // str_array = {"str1", "str2", ...}
 //
-void ezdash_print_page(int start_row, int num_lines, const char **str_array){ // ezdash_print_page#
+void ezdash_print_page(ezdash_component comp, int start_row, int num_lines, const char **str_array){ // ezdash_print_page#
 
     int i;
 
     clear();
-    move(start_row,0);
+//    move(start_row,0);
 
-    int j;
-    for(j=0; j<15; j++){ // This is here to hit the end of screen and test scrollok()
-        for(i=0; i<num_lines; i++){
-            printw(str_array[i]);
-        }
+    for(i=0; i<num_lines && i<comp.dash_height; i++){
+
+        mvaddnstr(
+            i%comp.rows,
+           (i/comp.rows)*comp.dash_width,
+            str_array[i],
+            comp.dash_width);
+
     }
+
     refresh();
 
 }
@@ -54,11 +58,11 @@ void ezdash_init(){
         "z\n",
     };
 
-    ezdash_print_page(1, 2, foo);
+//    ezdash_print_page(1, 2, foo);
 
     d = getch();    // curses call to input from keyboard
 
-    ezdash_print_page(1, 2, bar);
+//    ezdash_print_page(1, 2, bar);
 
     d = getch();    // curses call to input from keyboard
 
