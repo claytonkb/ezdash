@@ -30,9 +30,8 @@ typedef struct{
     // These fields used by component A:
     int dash_width;  // = cols / display_cols
     int dash_height; // = rows * display_cols
-
     int display_cols; // number of display columns, e.g. 3
-    int display_col_x_orig[MAX_DISPLAY_COLS];
+//    int display_col_x_orig[MAX_DISPLAY_COLS];
 
 } ezdash_component;
 
@@ -72,7 +71,7 @@ typedef struct{
 
 
 void ezdash_init(ezdash_mode mode, int display_cols);
-void ezdash_component_A_update(ezdash_component comp, int start_row, int num_lines, const char **str_array);
+void ezdash_component_A_update(ezdash_env *env, int start_row, int num_lines, const char **str_array);
 void ezdash_component_B_print(ezdash_component comp, const char *str);
 //void ezdash_update_components(ezdash_component comp, int start_row, int num_lines, const char **str_array);
 //WINDOW *ezdash_new_win(int height, int width, int starty, int startx);

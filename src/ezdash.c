@@ -28,9 +28,11 @@ void ezdash_component_B_print(ezdash_component comp, const char *str){
 
 // str_array = {"str1", "str2", ...}
 //
-void ezdash_component_A_update(ezdash_component comp, int start_row, int num_lines, const char **str_array){
+void ezdash_component_A_update(ezdash_env *env, int start_row, int num_lines, const char **str_array){
 
     int i;
+
+    ezdash_component comp = env->A;
 
     wclear(comp.wnd);
 
@@ -58,30 +60,29 @@ void ezdash_component_A_init(
         int cols,   int rows, 
         int display_cols){
 
-//    ezdash_component *comp = malloc(sizeof(ezdash_component));
+//    ezdash_component comp = env->A;
+    env->A.enable=1;
 
-    ezdash_component comp = env->A;
-    comp.enable=1;
+    env->A.rows = rows;
+    env->A.cols = cols;
 
-//    getmaxyx(wnd, comp.rows, comp.cols);
+//    scrollok(env->A.wnd, TRUE); // wprintw() acts like printf now
 
-    comp.rows /= 2;
-    comp.cols /= 2;
-//    comp.wnd = ezdash_new_win(wnd, comp.rows, comp.cols, 10, 10);
-    scrollok(comp.wnd, TRUE); // wprintw() acts like printf now
+    env->A.x_orig=x_orig;
+    env->A.y_orig=y_orig;
 
-    comp.x_orig=0;
-    comp.y_orig=0;
-//    comp.dash_width=comp.cols/num_cols;
-//    comp.dash_height=comp.rows*num_cols;
-//    comp.display_cols=num_cols;
+    env->A.wnd = ezdash_new_win(env->wnd, env->A.rows, env->A.cols, env->A.x_orig, env->A.y_orig);
 
-    int i;
-    for(i=0;i<MAX_DISPLAY_COLS;i++){
-        comp.display_col_x_orig[i]=0;
-    }
+    env->A.dash_width   = env->A.cols / display_cols;
+    env->A.dash_height  = env->A.rows * display_cols;
+    env->A.display_cols = display_cols;
 
-    return comp;
+//    int i;
+//    for(i=0;i<MAX_DISPLAY_COLS;i++){
+//        comp.display_col_x_orig[i]=0;
+//    }
+
+//    return comp;
 
 }
 
@@ -198,26 +199,35 @@ void ezdash_init(ezdash_mode mode, int display_cols){
 
 #define num_cols 3
 
-    ezdash_component comp;
-    comp.enable=1;
+//    ezdash_component comp = env->A;
 
-    getmaxyx(wnd,comp.rows,comp.cols);
-    comp.rows /= 2;
-    comp.cols /= 2;
-    comp.wnd = ezdash_new_win(wnd, comp.rows, comp.cols, 10, 10);
-    scrollok(comp.wnd, TRUE); // wprintw() acts like printf now
+    env->A.enable=1;
 
-    comp.x_orig=0;
-    comp.y_orig=0;
-    comp.dash_width=comp.cols/num_cols;
-    comp.dash_height=comp.rows*num_cols;
-    comp.display_cols=num_cols;
+//    getmaxyx(wnd,env->A.rows,env->A.cols);
+//    env->A.rows /= 2;
+//    env->A.cols /= 2;
+//    env->A.wnd = ezdash_new_win(wnd, env->A.rows, env->A.cols, 10, 10);
+//    scrollok(env->A.wnd, TRUE); // wprintw() acts like printf now
+//
+//    env->A.x_orig=0;
+//    env->A.y_orig=0;
+//    env->A.dash_width=env->A.cols / num_cols;
+//    env->A.dash_height=env->A.rows * num_cols;
+//    env->A.display_cols=num_cols;
 
-    for(i=0;i<MAX_DISPLAY_COLS;i++){
-        comp.display_col_x_orig[i]=0;
-    }
+//    ezdash_component_A_init(
+//            env, 
+//            10, 10, 
+//            (env->term_cols / 2), (env->term_rows / 2),
+//            3);
 
-    ezdash_component_A_update(comp, 0, num_cols*comp.rows, foo);
+    ezdash_component_A_init(
+            env, 
+            0, 0, 
+            env->term_cols, env->term_rows,
+            3);
+
+    ezdash_component_A_update(env, 0, num_cols*env->A.rows, foo);
 
     d = getch();    // curses call to input from keyboard
 
