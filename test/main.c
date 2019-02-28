@@ -62,7 +62,7 @@ void dev_prompt(void){
                 break;
 
             case 1:
-                ezdash_init();
+                ezdash_init(EZ_MODE1,3);
                 break;
 
             case 2:

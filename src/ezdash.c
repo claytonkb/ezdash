@@ -2,27 +2,37 @@
 //
 
 #include "ezdash.h"
+#include "cutils.h"
 #include <curses.h>
-
+#include <unistd.h>
+#include <stdlib.h>
+//unsigned int sleep(unsigned int seconds);
 
 int r,c;  // current row and column (upper-left is (0,0))
 
-void ezdash_screen_update(ezdash_component comp, int start_row, int num_lines, const char **str_array){
 
-    wclear(comp.wnd);
+//
+//
+void ezdash_component_B_print(ezdash_component comp, const char *str){
 
-    ezdash_print_page(comp, start_row, num_lines, str_array);
+    //don't clear component B
+    wprintw(comp.wnd, str);
+    wprintw(comp.wnd, "\n" );
 
     wrefresh(comp.wnd);
+
+    sleep(1);
 
 }
 
 
 // str_array = {"str1", "str2", ...}
 //
-void ezdash_print_page(ezdash_component comp, int start_row, int num_lines, const char **str_array){
+void ezdash_component_A_update(ezdash_component comp, int start_row, int num_lines, const char **str_array){
 
     int i;
+
+    wclear(comp.wnd);
 
     for(i=start_row; i<num_lines && i<comp.dash_height; i++){
 
@@ -35,10 +45,48 @@ void ezdash_print_page(ezdash_component comp, int start_row, int num_lines, cons
 
     }
 
+    wrefresh(comp.wnd);
+
 }
 
 
-void ezdash_init(ezdash_mode mode, int num_cols){
+//
+//
+void ezdash_component_A_init(
+        ezdash_env *env, 
+        int x_orig, int y_orig, 
+        int cols,   int rows, 
+        int display_cols){
+
+//    ezdash_component *comp = malloc(sizeof(ezdash_component));
+
+    ezdash_component comp = env->A;
+    comp.enable=1;
+
+//    getmaxyx(wnd, comp.rows, comp.cols);
+
+    comp.rows /= 2;
+    comp.cols /= 2;
+//    comp.wnd = ezdash_new_win(wnd, comp.rows, comp.cols, 10, 10);
+    scrollok(comp.wnd, TRUE); // wprintw() acts like printf now
+
+    comp.x_orig=0;
+    comp.y_orig=0;
+//    comp.dash_width=comp.cols/num_cols;
+//    comp.dash_height=comp.rows*num_cols;
+//    comp.display_cols=num_cols;
+
+    int i;
+    for(i=0;i<MAX_DISPLAY_COLS;i++){
+        comp.display_col_x_orig[i]=0;
+    }
+
+    return comp;
+
+}
+
+
+void ezdash_init(ezdash_mode mode, int display_cols){
 
     int i;
     char d;
@@ -46,14 +94,44 @@ void ezdash_init(ezdash_mode mode, int num_cols){
     WINDOW* wnd;
 
     wnd = initscr();    // curses call to initialize window
+
 //    cbreak();           // curses call to set no waiting for Enter key
 //    noecho();           // curses call to set no echoing
 //    getmaxyx(wnd,nrows,ncols);  // curses call to find size of window
 //    clear();            // curses call to clear screen, send cursor to position (0,0)
-
 //    refresh();  // curses call to implement all changes since last refresh
 
     scrollok(wnd, TRUE); // printw() acts like printf now
+
+    ezdash_env *env = malloc(sizeof(ezdash_env));
+
+    env->mode=mode;
+    env->wnd=wnd;
+    getmaxyx(wnd, env->term_rows, env->term_cols);
+
+    env->update_period=20;
+
+    env->split_A_BC=0.5;
+    env->split_B_C =0.5;
+    env->split_A_C =0.5;
+
+    switch(mode){
+        case EZ_MODE1:
+            env->A.enable=1;
+            env->B.enable=0;
+            env->C.enable=0;
+            break;
+        case EZ_MODE2:
+            break;
+        case EZ_MODE3:
+            break;
+        case EZ_MODE4:
+            break;
+        case EZ_MODE5:
+            break;
+        default:
+            _pigs_fly;
+    }
 
     const char *foo[] = {
         "Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
@@ -127,6 +205,7 @@ void ezdash_init(ezdash_mode mode, int num_cols){
     comp.rows /= 2;
     comp.cols /= 2;
     comp.wnd = ezdash_new_win(wnd, comp.rows, comp.cols, 10, 10);
+    scrollok(comp.wnd, TRUE); // wprintw() acts like printf now
 
     comp.x_orig=0;
     comp.y_orig=0;
@@ -138,7 +217,7 @@ void ezdash_init(ezdash_mode mode, int num_cols){
         comp.display_col_x_orig[i]=0;
     }
 
-    ezdash_screen_update(comp, 0, num_cols*comp.rows, foo);
+    ezdash_component_A_update(comp, 0, num_cols*comp.rows, foo);
 
     d = getch();    // curses call to input from keyboard
 

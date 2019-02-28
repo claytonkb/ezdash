@@ -39,6 +39,8 @@ typedef struct{
 
 typedef struct{
 
+    WINDOW* wnd; // stdscr base window
+
     int term_rows;
     int term_cols;
 
@@ -69,12 +71,19 @@ typedef struct{
 } ezdash_env;
 
 
-void ezdash_init();
-void ezdash_print_page(ezdash_component comp, int start_row, int num_lines, const char **str_array);
-void ezdash_screen_update(ezdash_component comp, int start_row, int num_lines, const char **str_array);
+void ezdash_init(ezdash_mode mode, int display_cols);
+void ezdash_component_A_update(ezdash_component comp, int start_row, int num_lines, const char **str_array);
+void ezdash_component_B_print(ezdash_component comp, const char *str);
+//void ezdash_update_components(ezdash_component comp, int start_row, int num_lines, const char **str_array);
 //WINDOW *ezdash_new_win(int height, int width, int starty, int startx);
 WINDOW *ezdash_new_win(WINDOW *wnd, int height, int width, int starty, int startx);
 void ezdash_del_win(WINDOW *wnd);
+void ezdash_component_A_init(
+        ezdash_env *env, 
+        int x_orig, int y_orig, 
+        int cols,   int rows, 
+        int display_cols);
+
 
 #endif // EZDASH_H
 
