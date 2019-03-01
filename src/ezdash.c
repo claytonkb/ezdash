@@ -20,6 +20,7 @@ void ezdash_component_B_print(ezdash_env *env, const char *str){
     wprintw(env->B.wnd, str);
     wprintw(env->B.wnd, "\n" );
 
+    touchwin(env->wnd);
     wrefresh(env->B.wnd);
 
 }

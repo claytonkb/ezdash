@@ -101,8 +101,6 @@ void dev_prompt(void){
                 ezdash_component_A_update(env, 0, num_cols*env->A.rows, foo);
                 c = getch();
 
-//                wclear(env->B.wnd);
-//
 //                for(i=40; i<80; i++){
 //                    ezdash_component_B_print(env, foo[i]);
 //                    ezdash_component_B_print(env, "\n");
