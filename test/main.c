@@ -95,10 +95,10 @@ void dev_prompt(void){
 
             case 1:
 
-#define num_cols 4
+#define num_cols 2
 
                 env = ezdash_init(EZ_MODE2, 
-                        0.5, 0.5,
+                        0.3, 0.5,
                         num_cols);
 
                 ezdash_component_A_update(env, 0, num_cols*env->A.rows, foo);

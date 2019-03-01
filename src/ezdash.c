@@ -122,20 +122,9 @@ ezdash_env *ezdash_init(ezdash_mode mode,
 }
 
 
-
-
-
-
 //
 //
 void ezdash_component_B_print(ezdash_env *env, const char *str){
-
-//    //don't clear component B
-//    wprintw(env->B.wnd, str);
-//    wprintw(env->B.wnd, "\n" );
-//
-//    touchwin(env->wnd);
-//    wrefresh(env->B.wnd);
 
     refresh();
 //    wprintw(env->B.wnd, "This is window B\n");
@@ -150,32 +139,11 @@ void ezdash_component_B_print(ezdash_env *env, const char *str){
 void ezdash_component_A_update(ezdash_env *env, int start_row, int num_lines, const char **str_array){
 
     int i=0;
-//
-//    ezdash_component comp = env->A;
-//
-//    refresh();
-//
-//    wclear(comp.wnd);
-//
-//    for(i=start_row; i<num_lines && i<comp.dash_height; i++){
-//
-//        mvwaddnstr(
-//            comp.wnd,
-//            comp.col_orig +  i%comp.rows,
-//            comp.row_orig + (i/comp.rows)*comp.dash_width,
-//            str_array[i],
-//            comp.dash_width );
-//
-//    }
-//
-//    wrefresh(comp.wnd);
 
     refresh();
-//    wclear(env->A.wnd);
-//    wprintw(env->A.wnd, "This is window A\n");
+    wclear(env->A.wnd);
 
     for(i=0; i<num_lines && i<env->A.dash_height; i++){
-//    for(i=0; i<num_lines && i<20; i++){
 
         //int mvwaddnstr(WINDOW *win, int row, int col, const char *str, int n);
         mvwaddnstr(
