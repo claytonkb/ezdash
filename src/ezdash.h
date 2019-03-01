@@ -22,16 +22,15 @@ typedef struct{
 
     int enable;
 
-    int cols;
     int rows;
-    int x_orig;
-    int y_orig;
+    int cols;
+    int row_orig;
+    int col_orig;
 
     // These fields used by component A:
+    int display_cols; // number of display columns, e.g. 3
     int dash_width;  // = cols / display_cols
     int dash_height; // = rows * display_cols
-    int display_cols; // number of display columns, e.g. 3
-//    int display_col_x_orig[MAX_DISPLAY_COLS];
 
 } ezdash_component;
 
@@ -57,9 +56,8 @@ typedef struct{
     ezdash_border AC_border;
 
     // split ratios
-    float split_A_BC;
-    float split_B_C;
-    float split_A_C;
+    float vsplit;
+    float hsplit;
 
     // units in milliseconds; must be greater than 15
     int update_period;
@@ -71,7 +69,7 @@ typedef struct{
 
 
 ezdash_env *ezdash_init(ezdash_mode mode, 
-        float split_A_BC, float split_B_C, float split_A_C,
+        float vsplit, float hsplit,
         int display_cols);
 void ezdash_component_A_update(ezdash_env *env, int start_row, int num_lines, const char **str_array);
 void ezdash_component_B_print(ezdash_env *env, const char *str);
@@ -79,15 +77,18 @@ void ezdash_component_B_print(ezdash_env *env, const char *str);
 //WINDOW *ezdash_new_win(int height, int width, int starty, int startx);
 WINDOW *ezdash_new_win(WINDOW *wnd, int height, int width, int starty, int startx);
 void ezdash_del_win(WINDOW *wnd);
+
 void ezdash_component_A_init(
         ezdash_env *env, 
-        int x_orig, int y_orig, 
-        int cols,   int rows, 
+        int rows, int cols,
+        int row_orig, int col_orig, 
         int display_cols);
+
 void ezdash_component_B_init(
         ezdash_env *env, 
-        int x_orig, int y_orig, 
-        int cols,   int rows);
+        int rows,   int cols,
+        int row_orig, int col_orig);
+
 
 
 #endif // EZDASH_H

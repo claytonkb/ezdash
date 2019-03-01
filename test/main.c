@@ -94,18 +94,33 @@ void dev_prompt(void){
                 break;
 
             case 1:
+
 #define num_cols 4
-                env = ezdash_init(EZ_MODE1, 
-                        0.5, 0.5, 0.5, 
+
+                env = ezdash_init(EZ_MODE2, 
+                        0.5, 0.5,
                         num_cols);
+
                 ezdash_component_A_update(env, 0, num_cols*env->A.rows, foo);
+//                ezdash_component_B_print(env, foo[0]);
+
+//refresh();
+//
+//wprintw(env->A.wnd, "This is window A\n");
+//wrefresh(env->A.wnd);
+//
+//mvwprintw(env->B.wnd, 0, 0, "This is window B\n");
+//wrefresh(env->B.wnd);
+
                 c = getch();
 
-//                for(i=40; i<80; i++){
-//                    ezdash_component_B_print(env, foo[i]);
-//                    ezdash_component_B_print(env, "\n");
-//                    sleep(1);
-//                }
+                for(i=40; i<80; i++){
+                    ezdash_component_B_print(env, foo[i]);
+                    ezdash_component_B_print(env, "\n");
+                    sleep(1);
+                }
+
+                c = getch();
 
                 endwin();
                 break;
