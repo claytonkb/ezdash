@@ -32,6 +32,8 @@ typedef struct{
     int dash_width;  // = cols / display_cols
     int dash_height; // = rows * display_cols
 
+    int entr_test;
+
 } ezdash_component;
 
 
