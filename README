@@ -1,1 +1,6 @@
 ez dashboard/CLI written in ncurses
+
+To install ncurses headers:
+
+    sudo apt-get install libncurses-dev
+
