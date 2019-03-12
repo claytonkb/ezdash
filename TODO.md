@@ -5,8 +5,11 @@ https://github.com/tony/NCURSES-Programming-HOWTO-examples
 http://www.cs.ukzn.ac.za/~hughm/os/notes/ncurses.html  
 http://www.clifford.at/stfl/  
 
-ez-dash
--------
+ezdash
+------
+
+    ezdash will run as its own process act as a poor man's tty and will 
+    utilize pipes for IPC. This makes ezdash highly modular.
 
     Up to three TUI components:
 
